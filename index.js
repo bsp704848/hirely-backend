@@ -12,7 +12,7 @@ import fs from 'fs'
 dotenv.config();
 const app = express();
 app.use(cors({
-    origin: 'https://hirely-ten.vercel.app/',
+    origin: 'https://hirely-ten.vercel.app',
     credentials: true, 
   }));
 app.use(express.json());
