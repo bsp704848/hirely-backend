@@ -144,25 +144,24 @@ export async function getEmployerApplications(req, res) {
 }
 
 export async function updateApplicationStatus(req, res) {
-    try {
-        if (req.user.role !== 'employer') {
-            return res.status(403).json({ error: 'Not authorized' })
-        }
-        const { status } = req.body;
-        const validStatuses = ['applied', 'interview', 'selected', 'rejected'];
-        if (!validStatuses.includes(status)) {
-            return res.status(400).json({ error: 'Invalid status' });
-        }
-        const application = await Application.findByIdAndUpdate(
-            req.params.id,
-            { status },
-            { new: true }
-        );
-        if (!application) {
-            return res.status(404).json({ error: 'Application not found' });
-        }
-        res.json({ success: true, application });
-    } catch (err) {
-        res.status(500).json({ error: err.message });
+  try {
+    const { id } = req.params
+    const { status } = req.body
+    const updated = await Application.findByIdAndUpdate(
+      id,
+      { status },
+      { new: true }
+    ).populate('position')
+    if (!updated) {
+      return res.status(404).json({ message: 'Application not found' })
     }
+
+
+    const io = req.app.get('io')
+    io.emit('applicationStatusUpdated', updated) 
+
+    res.json({ message: 'Status updated', application: updated })
+  } catch (err) {
+    res.status(500).json({ message: 'Server error', error: err.message })
+  }
 }

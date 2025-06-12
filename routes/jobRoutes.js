@@ -7,7 +7,7 @@ import {
   updateJob,
   getJobsByEmployer
 } from '../controllers/jobController.js';
-import authMiddleware from '../middleware/authMiddleware.js';
+import { protect } from '../middleware/authMiddleware.js'
 import { getEmployerApplications } from '../controllers/applicationController.js';
 
 const router = express.Router();
@@ -21,13 +21,13 @@ const errorHandler = (err, req, res, next) => {
   });
 };
 
-router.post('/add', authMiddleware, createJob);   
+router.post('/add', protect, createJob);   
 router.get('/', getJobs); 
 router.get('/:id', getJobById);       
 router.delete('/:id', deleteJob);  
 router.put('/:id', updateJob);   
-router.get('/employer/my-jobs', authMiddleware, getJobsByEmployer);
-router.get('/employer/applications', authMiddleware, getEmployerApplications);
+router.get('/employer/my-jobs', protect, getJobsByEmployer);
+router.get('/employer/applications', protect, getEmployerApplications);
 
 router.use(errorHandler);
 
