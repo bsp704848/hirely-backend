@@ -18,9 +18,10 @@ export async function submitApplication(req, res) {
             startDate,
             hearAbout,
             coverLetter
-        } = req.body;
+        } = req.body; 
 
-        if (
+
+                if (
             !name ||
             !email ||
             !phone ||
