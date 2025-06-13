@@ -6,6 +6,26 @@ import jwt from 'jsonwebtoken'
 export const registerUser = async (req, res) => {
   const { username, email, password, role } = req.body
 
+  // Backend validation
+  if (!username || !email || !password || !role) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  // Email regex
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.status(400).json({ message: 'Invalid email format' });
+  }
+
+  // Password regex: min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+  if (!passwordRegex.test(password)) {
+    return res.status(400).json({
+      message:
+        'Password must be at least 8 characters, include uppercase, lowercase, number, and special character',
+    });
+  }
+
   try {
     const userExists = await User.findOne({ email })
     if (userExists) {
@@ -54,7 +74,7 @@ export const loginUser = async (req, res) => {
 
 
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
-      expiresIn: '7d', // Token expires in 7 days
+      expiresIn: '7d', 
     });
 
   
