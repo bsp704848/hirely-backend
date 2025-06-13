@@ -116,7 +116,7 @@ export async function deleteJob(req, res) {
 
 export async function getJobsByEmployer(req, res) {
     try {
-        // Only allow if user is employer/admin
+
         if (req.user.role !== 'employer') {
             return res.status(403).json({ error: "Forbidden: Only employers can view their jobs" });
         }

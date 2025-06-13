@@ -3,7 +3,7 @@ import Application from '../models/Application.js';
 
 export async function submitApplication(req, res) {
     try {
-        // Validate required fields
+   
         const {
             name,
             email,
@@ -38,27 +38,27 @@ export async function submitApplication(req, res) {
             return res.status(400).json({ error: 'All fields are required.' });
         }
 
-        // Validate name (letters and spaces only)
+       
         if (!/^[A-Za-z\s]+$/.test(name)) {
             return res.status(400).json({ error: "Name must contain only letters and spaces" });
         }
 
-        // Validate email
+     
         if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
             return res.status(400).json({ error: "Invalid email address" });
         }
 
-        // Validate phone (10 digits, starts with 6-9)
+      
         if (!/^[6-9]\d{9}$/.test(phone)) {
             return res.status(400).json({ error: "Phone must be a valid 10 digit number" });
         }
 
-        // Validate zip (6 digits, not starting with 0)
+      
         if (!/^[1-9][0-9]{5}$/.test(zip)) {
             return res.status(400).json({ error: "Zip code must be a valid 6 digit number" });
         }
 
-        // Validate city/state (letters and spaces only)
+       
         if (!/^[A-Za-z\s]+$/.test(city)) {
             return res.status(400).json({ error: "City must contain only letters and spaces" });
         }
@@ -66,22 +66,22 @@ export async function submitApplication(req, res) {
             return res.status(400).json({ error: "State must contain only letters and spaces" });
         }
 
-        // Validate address (letters, numbers, spaces)
+      
         if (!/^[A-Za-z0-9\s,.-]+$/.test(address)) {
             return res.status(400).json({ error: "Address contains invalid characters" });
         }
 
-        // Validate employerName (letters and spaces only)
+      
         if (!/^[A-Za-z\s]+$/.test(employerName)) {
             return res.status(400).json({ error: "Employer name must contain only letters and spaces" });
         }
 
-        // Validate coverLetter (not empty)
+ 
         if (!coverLetter.trim()) {
             return res.status(400).json({ error: "Cover letter is required" });
         }
 
-        // Validate birthdate (must be 18+)
+     
         const today = new Date();
         const dob = new Date(birthdate);
         let age = today.getFullYear() - dob.getFullYear();
@@ -119,7 +119,7 @@ export async function getApplicationsByJob(req, res) {
 export async function getMyApplications(req, res) {
     try {
         const applications = await Application.find({ appliedBy: req.user._id })
-            .populate('position'); // <-- Add this
+            .populate('position'); 
         res.json({ success: true, applications });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
@@ -135,7 +135,7 @@ export async function getEmployerApplications(req, res) {
         const jobs = await import('../models/job.js').then(m => m.default.find({ createdBy: req.user._id }));
         const jobIds = jobs.map(job => job._id);
         const applications = await import('../models/Application.js').then(m =>
-            m.default.find({ position: { $in: jobIds } }).populate('position') // <-- Add populate here
+            m.default.find({ position: { $in: jobIds } }).populate('position')
         );
         res.json({ success: true, applications });
     } catch (err) {

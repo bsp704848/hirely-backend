@@ -5,11 +5,11 @@ export const protect =  async (req, res, next) => {
     try {
         let token = null;
 
-        // Check Authorization header first
+ 
         if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
             token = req.headers.authorization.split(' ')[1];
         }
-        // Fallback to cookie
+  
         if (!token && req.cookies?.token) {
             token = req.cookies.token;
             console.log('Token found in cookies:', token);

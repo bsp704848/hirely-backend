@@ -2,22 +2,22 @@ import User from '../models/User.js'
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken'
 
-//registerUser
+
 export const registerUser = async (req, res) => {
   const { username, email, password, role } = req.body
 
-  // Backend validation
+
   if (!username || !email || !password || !role) {
     return res.status(400).json({ message: 'All fields are required' });
   }
 
-  // Email regex
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return res.status(400).json({ message: 'Invalid email format' });
   }
 
-  // Password regex: min 8 chars, 1 uppercase, 1 lowercase, 1 number, 1 special char
+ 
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
   if (!passwordRegex.test(password)) {
     return res.status(400).json({
@@ -50,7 +50,7 @@ export const registerUser = async (req, res) => {
 }
 
 
-//loginUser
+
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
