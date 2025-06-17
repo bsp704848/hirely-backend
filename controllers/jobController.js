@@ -120,7 +120,7 @@ export async function getJobsByEmployer(req, res) {
         if (req.user.role !== 'employer') {
             return res.status(403).json({ error: "Forbidden: Only employers can view their jobs" });
         }
-        const jobs = await Job.find({ createdBy: req.user._id });
+        const jobs = await Job.find({ createdBy: req.user._id })  .sort({ postedAt: -1 }); 
         res.json(jobs);
     } catch (err) {
         res.status(500).json({ error: "Server error while fetching employer jobs" });

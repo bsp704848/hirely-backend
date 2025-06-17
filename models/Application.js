@@ -31,4 +31,7 @@ const applicationSchema = new Schema({
     }
 }, { timestamps: true });
 
+applicationSchema.index({ appliedBy: 1, position: 1 }, { unique: true });
+
+
 export default model('Application', applicationSchema);

@@ -1,9 +1,10 @@
 import Application from '../models/Application.js';
+import mongoose from 'mongoose';
 
 
 export async function submitApplication(req, res) {
     try {
-   
+        
         const {
             name,
             email,
@@ -19,7 +20,8 @@ export async function submitApplication(req, res) {
             hearAbout,
             coverLetter
         } = req.body; 
-
+        
+        const jobObjectId = new mongoose.Types.ObjectId(position);
 
                 if (
             !name ||
@@ -93,6 +95,17 @@ export async function submitApplication(req, res) {
         if (age < 18) {
             return res.status(400).json({ error: "You must be at least 18 years old to apply." });
         }
+        console.log('Checking for existing application with:', req.user._id, position);
+
+        const alreadyApplied = await Application.exists({
+            appliedBy: req.user._id,
+            position: jobObjectId
+        });
+        
+        if (alreadyApplied) {
+            return res.status(400).json({ error: 'You have already applied to this job.' });
+        }
+        
 
         const applicationData = {
             ...req.body,
@@ -165,4 +178,36 @@ export async function updateApplicationStatus(req, res) {
   } catch (err) {
     res.status(500).json({ message: 'Server error', error: err.message })
   }
+}
+
+export async function checkExistingApplication(req, res) {
+    try {
+        const { jobId } = req.params;
+        
+
+        if (!mongoose.Types.ObjectId.isValid(jobId)) {
+            return res.status(400).json({ 
+                success: false, 
+                error: 'Invalid job ID format' 
+            });
+        }
+
+        const existingApplication = await Application.findOne({
+            appliedBy: req.user._id,
+            position: jobId
+        });
+
+        res.status(200).json({ 
+            success: true, 
+            alreadyApplied: !!existingApplication,
+            application: existingApplication || null
+        });
+        
+    } catch (err) {
+        console.error('Error checking existing application:', err);
+        res.status(500).json({ 
+            success: false, 
+            error: 'Server error while checking application status' 
+        });
+    }
 }
