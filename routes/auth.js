@@ -14,7 +14,7 @@ router.get('/me', protect, getCurrentUser)
 
 
 router.get('/google/callback',
-    passport.authenticate('google', {
+  passport.authenticate('google', {
       successRedirect: 'https://hirely-app-mocha.vercel.app/',
       failureRedirect: 'https://hirely-app-mocha.vercel.app/login'
     })
