@@ -4,40 +4,39 @@ import passport from 'passport';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import User from '../models/User.js'; 
 
+
+console.log("Client ID:", process.env.GOOGLE_CLIENT_ID);
+
 passport.use(new GoogleStrategy({
+    
     clientID: process.env.GOOGLE_CLIENT_ID,
     clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL,
-    passReqToCallback: true
-}, async (req, accessToken, refreshToken, profile, done) => {
+     passReqToCallback: true
+}, async (accessToken, refreshToken, profile, done) => {
     try {
+        console.log("✅ Google AccessToken:", accessToken);
+        console.log("👤 Google Profile:", profile);
         const existingUser = await User.findOne({ googleId: profile.id });
+
         if (existingUser) return done(null, existingUser);
 
         const newUser = await User.create({
             username: profile.displayName,
             email: profile.emails[0].value,
             googleId: profile.id,
-            role: 'employee'
+            role: 'employee', 
         });
+
         done(null, newUser);
     } catch (err) {
+        console.error("❌ Error in GoogleStrategy callback:", err);
         done(err, null);
     }
 }));
 
-
-passport.serializeUser((user, done) => {
-    done(null, user.id);
-});
-
+passport.serializeUser((user, done) => done(null, user.id));
 passport.deserializeUser(async (id, done) => {
-    try {
-        const user = await User.findById(id);
-        done(null, user);
-    } catch (err) {
-        done(err, null);
-    }
+    const user = await User.findById(id);
+    done(null, user);
 });
-
-export default passport;
