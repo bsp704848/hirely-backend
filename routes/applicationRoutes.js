@@ -2,12 +2,12 @@ import express from 'express'
 import multer from 'multer'
 import { submitApplication, getApplicationsByJob, getMyApplications, updateApplicationStatus, checkExistingApplication } from '../controllers/applicationController.js'
 import { protect } from '../middleware/authMiddleware.js'
-import cors from 'cors';
+
 
 const router = express.Router()
 const upload = multer({ dest: 'uploads/' }) 
 
-router.options('*', cors());
+
 
 router.post('/submit', protect, upload.single('resume'), submitApplication)
 router.get('/job/:jobId', protect, getApplicationsByJob)
