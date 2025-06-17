@@ -28,7 +28,7 @@ passport.use(new GoogleStrategy({
 
         done(null, newUser);
     } catch (err) {
-        console.error("❌ Error in GoogleStrategy callback:", error);
+        console.error("❌ Error in GoogleStrategy callback:", err);
         done(err, null);
     }
 }));
