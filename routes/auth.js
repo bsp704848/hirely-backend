@@ -26,7 +26,7 @@ router.get('/google/callback',
       });
 
       res.cookie('token', token, {
-        httpOnly: false,
+        httpOnly: true,
         secure: true,
         sameSite: 'None',
         maxAge: 7 * 24 * 60 * 60 * 1000
@@ -36,7 +36,7 @@ router.get('/google/callback',
       console.log(`✅ Google Auth: Token created and cookie set for user ${req.user.email}`);
 
      
-      res.redirect(`${process.env.FRONTEND_URL}/auth/google/callback`);
+      res.redirect(`${process.env.FRONTEND_URL}/`);
 
     } catch (error) {
       console.error('Google Auth Callback Error:', error);
@@ -48,14 +48,9 @@ router.get('/google/callback',
 
   
 router.get('/logout', (req, res) => {
-  res.clearCookie('token', {
-    httpOnly: true,
-    secure: true,
-    sameSite: 'None',
-  });
-  req.logout(() => {
-    res.redirect(`${process.env.FRONTEND_URL}/login`);
-  });
+    req.logout(() => {
+        res.redirect('/');
+    });
 });
 
 export default router
