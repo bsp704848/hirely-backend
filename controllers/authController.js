@@ -37,12 +37,13 @@ export const registerUser = async (req, res) => {
 
     res.status(201).json({
       message: 'User registered successfully',
-      user: {
-        _id: newUser._id,
-        username: newUser.username,
-        email: newUser.email,
-        role: newUser.role,
-      },
+      // user: {
+      //   _id: newUser._id,
+      //   username: newUser.username,
+      //   email: newUser.email,
+      //   role: newUser.role,
+      // },
+      user:newUser
     })
   } catch (error) {
     res.status(500).json({ message: error.message })
@@ -80,7 +81,7 @@ export const loginUser = async (req, res) => {
   
     res.cookie('token', token, {
         httpOnly: true,
-        secure: true,
+        secure: false,
         sameSite: 'None',
         maxAge: 7 * 24 * 60 * 60 * 1000, 
       })

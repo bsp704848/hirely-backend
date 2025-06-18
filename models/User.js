@@ -1,4 +1,3 @@
-
 import mongoose from 'mongoose'
 import bcrypt from 'bcryptjs'
 
@@ -21,6 +20,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     enum: ['employee', 'employer'],
     default: 'employee',
+  },
+  googleId: {
+    type: String,
+    unique: true,
+    sparse: true,
   },
 }, { timestamps: true })
 

@@ -20,7 +20,8 @@ router.get('/google/callback',
     session: false
   }),
   async (req, res) => {
-    console.log('Setting token for user:', req.user._id);
+    console.log('Setting token for user:', req.user?._id);
+ 
     const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
       expiresIn: '7d',
     });

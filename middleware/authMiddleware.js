@@ -5,8 +5,9 @@ export const protect = async (req, res, next) => {
     
     const token = req.cookies.token;
 
-    console.log('Token from cookie:', token);
-    
+    console.log('Token from cookie:', req.cookies.token);
+
+
     try {
         let token = null;
 
