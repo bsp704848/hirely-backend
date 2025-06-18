@@ -10,13 +10,14 @@ import path from 'path'
 import fs from 'fs'
 import { Server } from 'socket.io'
 import http from 'http'
-import session from 'express-session';
 import passport from 'passport';
 import './config/passport.js'; 
 
 
 dotenv.config();
+
 const app = express();
+
 app.use(cors({
   origin: [
     'http://localhost:5173',
@@ -26,23 +27,10 @@ app.use(cors({
   credentials: true
 }));
 
-
-app.use(session({
-  secret: process.env.SESSION_SECRET,
-  resave: false,
-  saveUninitialized: false,
-  cookie: {
-    secure:true,
-    httpOnly: true,
-    sameSite: 'none',
-    maxAge: 24 * 60 * 60 * 1000 
-  }
-}));
-
 app.use(express.json());
 app.use(cookieParser())
 app.use(passport.initialize());
-app.use(passport.session());
+app.use(passport.initialize());
 
 app.use('/api/auth', authRoutes)
 app.use('/api/jobs', jobRoutes);
