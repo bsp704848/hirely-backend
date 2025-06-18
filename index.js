@@ -30,7 +30,7 @@ app.use(cors({
 app.use(express.json());
 app.use(cookieParser())
 app.use(passport.initialize());
-app.use(passport.initialize());
+
 
 app.use('/api/auth', authRoutes)
 app.use('/api/jobs', jobRoutes);
