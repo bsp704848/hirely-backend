@@ -1,7 +1,7 @@
 
 import express from 'express'
 import passport from 'passport';
-import { registerUser, loginUser, getCurrentUser  } from '../controllers/authController.js'
+import { registerUser, loginUser, getCurrentUser } from '../controllers/authController.js'
 import { protect } from '../middleware/authMiddleware.js'
 import jwt from 'jsonwebtoken';
 
@@ -9,7 +9,7 @@ const router = express.Router()
 
 router.post('/register', registerUser)
 router.post('/login', loginUser)
-router.get('/me', protect, getCurrentUser) 
+router.get('/me', protect, getCurrentUser)
 
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -28,14 +28,14 @@ router.get('/google/callback',
       res.cookie('token', token, {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'None',
+        sameSite: process.env.NODE_ENV === 'production' ? 'None' : 'Lax',
         maxAge: 7 * 24 * 60 * 60 * 1000
       });
 
 
       console.log(`✅ Google Auth: Token created and cookie set for user ${req.user.email}`);
 
-     
+
       res.redirect(`${process.env.FRONTEND_URL}/`);
 
     } catch (error) {
@@ -44,13 +44,13 @@ router.get('/google/callback',
     }
   }
 );
-  
 
-  
+
+
 router.get('/logout', (req, res) => {
-    req.logout(() => {
-        res.redirect('/');
-    });
+  req.logout(() => {
+    res.redirect('/');
+  });
 });
 
 export default router
