@@ -17,11 +17,11 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 router.get('/google/callback',
   passport.authenticate('google', {
     failureRedirect: `${process.env.FRONTEND_URL}/login`,
-    session: false
+    session: true
   }),
   async (req, res) => {
     try {
-
+console.log('Google Auth Callback:', req.user);
       const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
         expiresIn: '7d',
       });
