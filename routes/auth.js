@@ -48,9 +48,13 @@ router.get('/google/callback',
 
 
 router.get('/logout', (req, res) => {
-  req.logout(() => {
-    res.redirect('/');
+  res.clearCookie('token', {
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None',
   });
+  return res.status(200).json({ message: 'Logged out successfully' });
 });
+
 
 export default router
