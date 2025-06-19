@@ -37,7 +37,7 @@ router.get('/google/callback',
       console.log(`✅ Google Auth: Token created and cookie set for user ${req.user.email}`);
 
 
-      res.redirect(`${process.env.FRONTEND_URL}/auth/google/callback`);
+      res.redirect(`${process.env.FRONTEND_URL}/auth/google/success?tokenSet=true`);
 
     } catch (error) {
       console.error('Google Auth Callback Error:', error);
