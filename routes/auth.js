@@ -25,19 +25,9 @@ router.get('/google/callback',
       const token = jwt.sign({ id: req.user._id }, process.env.JWT_SECRET, {
         expiresIn: '7d',
       });
+      console.log(`✅ Google Auth: Token created and cookie set for user ${req.user.email}`); 
 
-      res.cookie('token', token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'None',
-        maxAge: 7 * 24 * 60 * 60 * 1000
-      });
-
-
-      console.log(`✅ Google Auth: Token created and cookie set for user ${req.user.email}`);
-
-
-      res.redirect(`${process.env.FRONTEND_URL}/auth/google/success?tokenSet=true`);
+      res.redirect(`${process.env.FRONTEND_URL}/auth/google/success?token=${token}`);
 
     } catch (error) {
       console.error('Google Auth Callback Error:', error);

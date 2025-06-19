@@ -79,23 +79,16 @@ export const loginUser = async (req, res) => {
     });
 
   
-    res.cookie('token', token, {
-        httpOnly: true,
-        secure: true,
-        sameSite: 'None',
-        maxAge: 7 * 24 * 60 * 60 * 1000, 
-      })
-      .status(200)
-      .json({
-        token,
-        message: 'Login success',
-        user: {
-          _id: user._id,
-          username: user.username,
-          email: user.email,
-          role: user.role,
-        },
-      });
+    return res.status(200).json({
+      message: 'Login success',
+      token, 
+      user: {
+        _id: user._id,
+        username: user.username,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (err) {
     console.error('Login error:', err.message);
     return res.status(500).json({ message: 'Server error' });

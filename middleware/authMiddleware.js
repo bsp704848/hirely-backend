@@ -5,15 +5,14 @@ export const protect = async (req, res, next) => {
     let token = null;
 
 
-    if (req.cookies && req.cookies.token) {
-        token = req.cookies.token;
-        console.log('Token from cookie:', token);
-    }
-
-
-    else if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
+    if (req.headers.authorization && req.headers.authorization.startsWith('Bearer ')) {
         token = req.headers.authorization.split(' ')[1];
         console.log('Token from Authorization header:', token);
+    }
+
+    else if (req.cookies && req.cookies.token) {
+        token = req.cookies.token;
+        console.log('Token from cookie:', token);
     }
 
 
@@ -23,7 +22,7 @@ export const protect = async (req, res, next) => {
     }
 
     try {
-     
+
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         console.log('Decoded token:', decoded);
 
