@@ -95,7 +95,7 @@ export async function submitApplication(req, res) {
         if (age < 18) {
             return res.status(400).json({ error: "You must be at least 18 years old to apply." });
         }
-        console.log('Checking for existing application with:', req.user._id, position);
+    
 
         const alreadyApplied = await Application.exists({
             appliedBy: req.user._id,

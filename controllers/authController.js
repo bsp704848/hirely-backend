@@ -57,7 +57,7 @@ export const registerUser = async (req, res) => {
 export const loginUser = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log('Login request received:', { email, password });
+
 
     if (!email?.trim() || !password?.trim()) {
       return res.status(400).json({ message: 'Email and password are required' });
@@ -65,13 +65,12 @@ export const loginUser = async (req, res) => {
 
     const user = await User.findOne({ email });
     if (!user) {
-      console.log('User not found for email:', email);
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
-      console.log('Password mismatch for user:', user); 
+
       return res.status(400).json({ message: 'Invalid credentials' });
     }
 
@@ -109,8 +108,7 @@ export const googleLogin = async (req, res) => {
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
     })
-    console.log('Token:', token)
-    console.log('Expected Audience:', process.env.GOOGLE_CLIENT_ID)
+
 
     const payload = ticket.getPayload()
 
