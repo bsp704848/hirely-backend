@@ -15,8 +15,9 @@ const userSchema = new mongoose.Schema({
   password: {
     type: String,
     required: function () {
-      return !this.googleId; 
+      return !this.googleId;
     },
+  },
   role: {
     type: String,
     enum: ['employee', 'employer'],
@@ -25,6 +26,7 @@ const userSchema = new mongoose.Schema({
   googleId: {
     type: String,
     unique: true,
+    sparse: true,
   },
   profilePic: { type: String },
 }, { timestamps: true })
