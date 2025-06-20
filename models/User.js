@@ -14,8 +14,9 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, 'Password is required'],
-  },
+    required: function () {
+      return !this.googleId; 
+    },
   role: {
     type: String,
     enum: ['employee', 'employer'],

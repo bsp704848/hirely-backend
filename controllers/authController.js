@@ -111,6 +111,7 @@ export const googleLogin = async (req, res) => {
     })
     console.log('Token:', token)
     console.log('Expected Audience:', process.env.GOOGLE_CLIENT_ID)
+
     const payload = ticket.getPayload()
 
     const { sub: googleId, email, name, picture } = payload
@@ -121,8 +122,7 @@ export const googleLogin = async (req, res) => {
     if (!user) {
       user = await User.create({
         username: name,
-        email,
-        password: '', 
+        email, 
         role: 'employee', 
         googleId,
         profilePic: picture,
