@@ -1,5 +1,7 @@
 import Application from '../models/Application.js';
 import mongoose from 'mongoose';
+import Job from '../models/job.js';
+import Application from '../models/Application.js';
 
 
 export async function submitApplication(req, res) {
@@ -146,16 +148,16 @@ export async function getEmployerApplications(req, res) {
         if (req.user.role !== 'employer') {
             return res.status(403).json({ success: false, message: 'Not authorized' });
         }
-        const jobs = await import('../models/job.js').then(m => m.default.find({ createdBy: req.user._id }));
+        const jobs = await Job.find({ createdBy: req.user._id });
         console.log('Employer jobs:', jobs);
         const jobIds = jobs.map(job => job._id); 
         console.log('Job IDs:', jobIds);
-        const applications = await import('../models/Application.js').then(m =>
-            m.default.find({ position: { $in: jobIds } }).populate('position')
-        );
+        const applications = await Application.find({
+            position: { $in: jobIds },
+        }).populate('position');
+        
         console.log('Employer applications:', applications);
         res.json({ success: true, applications });
-        console.log('Employer applications:', applications);
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
