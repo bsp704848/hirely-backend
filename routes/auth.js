@@ -10,7 +10,7 @@ const router = express.Router()
 router.post('/register', registerUser)
 router.post('/login', loginUser)
 router.get('/me', protect, getCurrentUser)
-router.post('/auth/google', googleLogin)
+router.post('/google', googleLogin)
 
 
 router.get('/logout', (req, res) => {
