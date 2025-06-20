@@ -147,7 +147,9 @@ export async function getEmployerApplications(req, res) {
             return res.status(403).json({ success: false, message: 'Not authorized' });
         }
         const jobs = await import('../models/job.js').then(m => m.default.find({ createdBy: req.user._id }));
-        const jobIds = jobs.map(job => job._id);
+        console.log('Employer jobs:', jobs);
+        const jobIds = jobs.map(job => job._id); 
+        console.log('Job IDs:', jobIds);
         const applications = await import('../models/Application.js').then(m =>
             m.default.find({ position: { $in: jobIds } }).populate('position')
         );
