@@ -1,4 +1,4 @@
-import Application from '../models/Application.js';
+
 import mongoose from 'mongoose';
 import Job from '../models/job.js';
 import Application from '../models/Application.js';
