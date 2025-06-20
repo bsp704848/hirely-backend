@@ -109,7 +109,8 @@ export const googleLogin = async (req, res) => {
       idToken: token,
       audience: process.env.GOOGLE_CLIENT_ID,
     })
-
+    console.log('Token:', token)
+    console.log('Expected Audience:', process.env.GOOGLE_CLIENT_ID)
     const payload = ticket.getPayload()
 
     const { sub: googleId, email, name, picture } = payload
