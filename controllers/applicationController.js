@@ -111,6 +111,7 @@ export async function submitApplication(req, res) {
 
         const applicationData = {
             ...req.body,
+            position: jobObjectId,
             resume: req.file ? req.file.filename : null,
             appliedBy: req.user._id,
             employerName: req.body.employerName 
