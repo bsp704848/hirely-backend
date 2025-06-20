@@ -121,7 +121,7 @@ export const googleLogin = async (req, res) => {
       user = await User.create({
         username: name,
         email, 
-        role:  assignedRole, 
+        role: role || 'employee',
         googleId,
         profilePic: picture,
       })
