@@ -97,7 +97,7 @@ export const loginUser = async (req, res) => {
 }; 
 
 export const googleLogin = async (req, res) => {
-  const { token } = req.body
+  const { token,role } = req.body
 
   if (!token) {
     return res.status(400).json({ message: 'Google token missing' })
@@ -121,7 +121,7 @@ export const googleLogin = async (req, res) => {
       user = await User.create({
         username: name,
         email, 
-        role: 'employee', 
+        role:  assignedRole, 
         googleId,
         profilePic: picture,
       })
