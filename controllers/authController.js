@@ -117,22 +117,14 @@ export const googleLogin = async (req, res) => {
 
     let user = await User.findOne({ email })
 
-    if (user) {
-    
-      if (user.role !== role) {
-        return res.status(403).json({
-          message: `This email is already registered as ${user.role}. Please log in with that role.`,
-        });
-      }
-    } else {
-  
+    if (!user) {
       user = await User.create({
         username: name,
-        email,
+        email, 
         role: role || 'employee',
         googleId,
         profilePic: picture,
-      });
+      })
     }
 
     const jwtToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
