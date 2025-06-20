@@ -153,6 +153,7 @@ export async function getEmployerApplications(req, res) {
         const applications = await import('../models/Application.js').then(m =>
             m.default.find({ position: { $in: jobIds } }).populate('position')
         );
+        console.log('Employer applications:', applications);
         res.json({ success: true, applications });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
