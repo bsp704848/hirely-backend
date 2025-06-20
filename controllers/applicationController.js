@@ -155,6 +155,7 @@ export async function getEmployerApplications(req, res) {
         );
         console.log('Employer applications:', applications);
         res.json({ success: true, applications });
+        console.log('Employer applications:', applications);
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
     }
