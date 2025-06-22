@@ -157,6 +157,7 @@ export async function getEmployerApplications(req, res) {
             position: { $in: jobIds },
         }).populate('position');
         
+        console.log('Employer ID:', req.user._id);
         console.log('Employer applications:', applications);
         res.json({ success: true, applications });
     } catch (err) {
