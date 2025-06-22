@@ -25,6 +25,8 @@ export async function submitApplication(req, res) {
         
         const jobObjectId = new mongoose.Types.ObjectId(position);
 
+        console.log("position",jobObjectId)
+
                 if (
             !name ||
             !email ||
