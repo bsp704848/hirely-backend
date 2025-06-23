@@ -149,15 +149,23 @@ export async function getMyApplications(req, res) {
 export async function getEmployerApplications(req, res) {
     try {
         if (req.user.role !== 'employer') {
-            return res.status(403).json({ success: false, message: 'Not authorized' });
-        }
+            return res.status(403).json({ success: false, message: 'Not authorized' }); 
+        } 
+
+        console.log('👉 req.user._id:', req.user._id, typeof req.user._id);
+
         const jobs = await Job.find({ createdBy: req.user._id });
-        console.log('Employer jobs:', jobs);
+
+        console.log('👉 Jobs found:', jobs.map(j => j._id.toString()));
+
         const jobIds = jobs.map(job => job._id); 
-        console.log('Job IDs:', jobIds);
+        console.log('👉 jobIds to search in applications:', jobIds);
+        
         const applications = await Application.find({
             position: { $in: jobIds },
-        }).populate('position');
+        }).populate('position'); 
+
+        console.log('👉 Applications found:', applications.length);
         
         console.log('Employer ID:', req.user._id);
         console.log('Employer applications:', applications);
