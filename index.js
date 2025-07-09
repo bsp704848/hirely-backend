@@ -51,6 +51,9 @@ app.get('/uploads/:filename', (req, res, next) => {
 
 
 app.use('/uploads', express.static(path.join(process.cwd(), 'uploads')))
+app.get("/", (req, res) => {
+  res.send("Backend is awake");
+});
 
 mongoose.connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
