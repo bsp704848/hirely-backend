@@ -25,7 +25,6 @@ export async function submitApplication(req, res) {
         
         const jobObjectId = new mongoose.Types.ObjectId(position);
 
-        console.log("position",jobObjectId)
 
                 if (
             !name ||
@@ -152,23 +151,17 @@ export async function getEmployerApplications(req, res) {
             return res.status(403).json({ success: false, message: 'Not authorized' }); 
         } 
 
-        console.log('👉 req.user._id:', req.user._id, typeof req.user._id);
 
         const jobs = await Job.find({ createdBy: req.user._id });
 
-        console.log('👉 Jobs found:', jobs.map(j => j._id.toString()));
 
         const jobIds = jobs.map(job => job._id); 
-        console.log('👉 jobIds to search in applications:', jobIds);
         
         const applications = await Application.find({
             position: { $in: jobIds },
         }).populate('position'); 
 
-        console.log('👉 Applications found:', applications.length);
         
-        console.log('Employer ID:', req.user._id);
-        console.log('Employer applications:', applications);
         res.json({ success: true, applications });
     } catch (err) {
         res.status(500).json({ success: false, error: err.message });
